@@ -1,0 +1,4 @@
+## roles/ansible-role-ipa-client/vars/main.yml
+# vim:ft=yaml.ansible:
+---
+...

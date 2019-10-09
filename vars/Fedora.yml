@@ -1,0 +1,5 @@
+## vars/Fedora.yml
+---
+ipaclient_install_command: '/sbin/ipa-client-install'
+ipa_client_pkgs:
+  - ipa-client

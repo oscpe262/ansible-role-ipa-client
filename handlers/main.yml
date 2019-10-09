@@ -1,0 +1,15 @@
+## roles/ansible-role-ipa-client/handlers/main.yml
+# vim:ft=yaml.ansible:
+---
+- name: restart sssd
+  service:
+    name: sssd
+    state: restarted
+    enabled: yes
+
+- name: restart ssh
+  service:
+    name: ssh
+    state: restarted
+    enabled: yes
+...
