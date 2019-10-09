@@ -1,0 +1,6 @@
+## vars/RedHat8.yml
+---
+ipaclient_install_command: '/sbin/ipa-client-install'
+ipa_client_pkgs:
+  - ipa-client
+  - python3-dbus
