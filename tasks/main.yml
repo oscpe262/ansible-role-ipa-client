@@ -2,7 +2,10 @@
 # vim:ft=yaml.ansible:
 ---
 - name: Include distribution specific variables
-  include_vars: '{{ ansible_distribution }}.yml'
+  include_vars: '{{ item }}'
+  with_first_found:
+    - '{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml'
+    - '{{ ansible_distribution }}.yml'
 
 - name: Install required packages
   package:
@@ -26,8 +29,22 @@
     state: '{{ ipaclient_state }}'
     update_dns: '{{ ipaclient_update_dns }}'
     validate_certs: '{{ ipa_validate_certs }}'
-  serial: 1
   ignore_errors: yes
+
+- name: Add CNAMEs for host
+  when: ipaclient_cnames is defined
+  ipa_dnsrecord:
+    record_type: CNAME
+    record_name: '{{ item }}'
+    record_value: '{{ ansible_nodename }}'
+    zone_name: '{{ ipaserver_domain }}'
+    ipa_host: '{{ ipaserver }}'
+    ipa_pass: '{{ ipaadmin_password }}'
+    ipa_user: '{{ ipaadmin_principal }}'
+    ipa_prot: https
+    state: '{{ ipaclient_state }}'
+    validate_certs: '{{ ipa_validate_certs }}'
+  with_items: '{{ ipaclient_cnames }}'
 
 - name: Enroll host in domain
   args:
